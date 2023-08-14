@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Alembic - Basic Usage | Shanin Blog</title>
+<meta name="keywords" content="Python, SQLAlchemy, Alembic">
+<meta name="description" content="This is not tutorial - it&rsquo;s my understanding! If I&rsquo;m worng - let me know.
+ Before dive into the tutorial - first read Alembic getting started manual.
+Setup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:
+$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.
+In alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string.">
+<meta name="author" content="">
+<link rel="canonical" href="http://example.org/posts/alembic-basic-usage/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.735c14aef5bd53538764fbe842da3b6b2041059e13045d88f457bc438e58e012.css" integrity="sha256-c1wUrvW9U1OHZPvoQto7ayBBBZ4TBF2I9Fe8Q45Y4BI=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="http://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Alembic - Basic Usage" />
+<meta property="og:description" content="This is not tutorial - it&rsquo;s my understanding! If I&rsquo;m worng - let me know.
+ Before dive into the tutorial - first read Alembic getting started manual.
+Setup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:
+$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.
+In alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/alembic-basic-usage/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-12T12:36:45+03:00" />
+<meta property="article:modified_time" content="2023-08-12T12:36:45+03:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Alembic - Basic Usage"/>
+<meta name="twitter:description" content="This is not tutorial - it&rsquo;s my understanding! If I&rsquo;m worng - let me know.
+ Before dive into the tutorial - first read Alembic getting started manual.
+Setup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:
+$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.
+In alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://example.org/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Alembic - Basic Usage",
+      "item": "http://example.org/posts/alembic-basic-usage/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Alembic - Basic Usage",
+  "name": "Alembic - Basic Usage",
+  "description": "This is not tutorial - it\u0026rsquo;s my understanding! If I\u0026rsquo;m worng - let me know.\n Before dive into the tutorial - first read Alembic getting started manual.\nSetup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:\n$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.\nIn alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string.",
+  "keywords": [
+    "Python", "SQLAlchemy", "Alembic"
+  ],
+  "articleBody": " This is not tutorial - it’s my understanding! If I’m worng - let me know.\n Before dive into the tutorial - first read Alembic getting started manual.\nSetup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:\n$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.\nIn alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string. For example:\n[alembic] ; ... configuration ... sqlalchemy.url = postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable ; ... configuration ... This thing will allow alembic to connect to the database and detect changes. As I understand - if you want to create initial migration file with all changes in it and every thing is already in the database, alembic will autogenerate empty migration file. Because there are no difference between metadata and actual schema in database.\nAutogenerate migration Main goal of using alembic - autogenerating migrations. You can create migrations and manualy declare all tables and relation in migration files. But, more for me ( and most of the userers in the internet, as I can see ) autogeneration is the main use case.\nAfter initial setup and defining all required files and connections declare your table. For example:\nfrom sqlalchemy import create_engine, Column, Integer, Text, Table, MetaData engine = create_engine(DATABASE_URL) metadata = MetaData() users = Table( \"users\", metadata, Column(\"id\", Integer, primary_key=True), Column(\"name\", Text), Column(\"image\", Text), Column(\"active\", Text), Column(\"created_at\", Text), )  I using SQLAlchemy Core. It’s enough for me. For SQLAlchemy ORM steps will be mostly the same - declare models, import metadata\n Define metadata\nAfter alembic initialization you can fined alembic folder in the folder where you start this command. In this folder exist env.py file. Here we need to import all models and metadata. For example:\n# ./alembic/env.py import models as db # add your model's MetaData object here # for 'autogenerate' support # from myapp import mymodel # target_metadata = mymodel.Base.metadata target_metadata = db.metadata As you can see from the autogenerated comments - alembic asc you to import you model ( or multiple models ) and change target_metadata value to your actual metadata. Very important to import your models because in another way your metadata.tables will be empty.\nCreate initial migration\nAnd finaly run this command:\n$ alembic revision --autogenerate -m \"initial\" INFO [alembic.runtime.migration] Context impl PostgresqlImpl. INFO [alembic.runtime.migration] Will assume transactional DDL. INFO [alembic.autogenerate.compare] Detected added table 'users' Generating /home/alex/projects/memosynth/memosynth- infrastructure/database/alembic/versions/c46dab3fa34a_initial.py ... done After that you will find new file with content like this:\n\"\"\"initial Revision ID: c46dab3fa34a Revises: Create Date: 2023-08-12 13:55:00.336951 \"\"\" from typing import Sequence, Union from alembic import op import sqlalchemy as sa def upgrade() - None: # ### commands auto generated by Alembic - please adjust! ### op.create_table('users', sa.Column('id', sa.Integer(), nullable=False), sa.Column('name', sa.Text(), nullable=True), sa.Column('email', sa.Text(), nullable=True), sa.Column('phone', sa.Text(), nullable=True), sa.Column('image', sa.Text(), nullable=True), sa.Column('role', sa.Text(), nullable=True), sa.Column('active', sa.Text(), nullable=True), sa.Column('password_hash', sa.Text(), nullable=True), sa.Column('public', sa.Text(), nullable=True), sa.Column('created_at', sa.Text(), nullable=True), sa.PrimaryKeyConstraint('id') ) # ### end Alembic commands ### def downgrade() - None: # ### commands auto generated by Alembic - please adjust! ### op.drop_table('users') # ### end Alembic commands ### Also, if you connect to database you will find new table alembic_revision:\napplication=# \\dt List of relations Schema | Name | Type | Owner --------+-----------------+-------+------- public | alembic_version | table | user (1 row) application=# SELECT * FROM alembic_version; version_num ------------- (0 rows) Models in separate files For example you have users model in separate file:\n# ./models/users.py from sqlalchemy import Column, Integer, Table, Text from . import metadata users = Table( \"users\", metadata, Column(\"id\", Integer, primary_key=True), Column(\"name\", Text), Column(\"image\", Text), Column(\"active\", Text), Column(\"created_at\", Text), ) And ./models/__init__.py file with metadata and engine defined:\nfrom sqlalchemy import create_engine, MetaData DATABASE_URL: str = \"postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable\" engine = create_engine(DATABASE_URL) metadata = MetaData() In this case if you just import metadata - migration file will be empty. This is heppening because your MetaData will not contain any tables. To include tables add this table in ./alembic/env.py like this:\nfrom models.users import users Or include them in ./models/__init__.py like this:\nfrom sqlalchemy import create_engine, MetaData DATABASE_URL: str = \"postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable\" engine = create_engine(DATABASE_URL) metadata = MetaData() from models.users import users To understand why this is happening read python documentation about module importing and what is goin on under the hood - 5. The import system.\nRunning migration $ alembic upgrade head Updating database schema Let’s say you want to extend user model and add a few more tables like this:\n# ./models/users.py from sqlalchemy import Column, Table, String, Text, ForeignKey, Boolean, DateTime, Integer # from sqlalchemy.dialects.postgresql import UUID # import uuid from datetime import datetime from . import metadata users = Table( \"users\", metadata, Column(\"id\", Integer, primary_key=True), Column(\"name\", Text), Column(\"email\", Text), Column(\"phone\", String(16)), Column(\"image\", Text), Column(\"role\", String(16), ForeignKey(\"roles.name\", ondelete=\"CASCADE\")), Column(\"active\", Boolean, default=False), Column(\"password_hash\", Text), Column(\"public\", Boolean, default=False), Column(\"created_at\", DateTime, default=datetime.now), Column(\"updated_at\", DateTime, default=datetime.now, onupdate=datetime.now), ) roles = Table( \"roles\", metadata, Column(\"name\", String(16), primary_key=True) ) providers = Table( \"providers\", metadata, Column(\"name\", String(16), primary_key=True) ) user_providers = Table( \"user_providers\", metadata, Column(\"user_id\", Integer, ForeignKey(\"users.id\")), Column(\"provider\", String(16), ForeignKey(\"providers.name\")), ) After making changes in your file run another command:\n$ alembic revision --autogenerate -m \"update user table\" This command should add another file in ./alembic/revisions folder:\n\"\"\"update user table Revision ID: aabbe38f60da Revises: 327ea701a73a Create Date: 2023-08-12 14:37:37.199586 \"\"\" from typing import Sequence, Union from alembic import op import sqlalchemy as sa # revision identifiers, used by Alembic. revision: str = 'aabbe38f60da' down_revision: Union[str, None] = '327ea701a73a' branch_labels: Union[str, Sequence[str], None] = None depends_on: Union[str, Sequence[str], None] = None def upgrade() - None: # ### commands auto generated by Alembic - please adjust! ### op.create_table('providers', sa.Column('name', sa.String(length=16), nullable=False), sa.PrimaryKeyConstraint('name') ) op.create_table('roles', sa.Column('name', sa.String(length=16), nullable=False), sa.PrimaryKeyConstraint('name') ) op.create_table('user_providers', sa.Column('user_id', sa.Integer(), nullable=True), sa.Column('provider', sa.String(length=16), nullable=True), sa.ForeignKeyConstraint(['provider'], ['providers.name'], ), sa.ForeignKeyConstraint(['user_id'], ['users.id'], ) ) op.add_column('users', sa.Column('updated_at', sa.DateTime(), nullable=True)) op.create_foreign_key(None, 'users', 'roles', ['role'], ['name'], ondelete='CASCADE') # ### end Alembic commands ### def downgrade() - None: # ### commands auto generated by Alembic - please adjust! ### op.drop_constraint(None, 'users', type_='foreignkey') op.drop_column('users', 'updated_at') op.drop_table('user_providers') op.drop_table('roles') op.drop_table('providers') # ### end Alembic commands ### As you can see - alembic does not recognize column type change… May be I’m doing something wrong but probably this should be added manualy. And also:\nop.create_foreign_key(None, 'users', 'roles', ['role'], ['name'], ondelete='CASCADE') Will create foreign key constraing without name?… That’s why this files has this comments:\n# ### commands auto generated by Alembic - please adjust! ###  Important! Always check what actualy does it want to write into database! Do not trust the machines :)\n So basicaly what I did is add all necessary changes into migration file and upgrade head. By the way, as you can see columns active and created_at had type Text, after changes I have change this types to more convinient Boolean and DateTime, but you cannot see this in migration file. Change column types is a little bit paintfull. I made it by adding new column is_active, move all data into new column from old active, remove old column and rename new column to active. And in downgrade function this process should be reversed. This is the code:\nop.add_column('users', sa.Column('is_active', sa.Text)) connection = op.get_bind() connection.execute(text(\"UPDATE users SET is_active = (active::text)\")) op.drop_column('users', 'active') op.alter_column(\"users\", \"is_active\", new_column_name=\"active\") This shows us the importantse of designing database schema on early stages of the project.\nManaging migrations After you did a couple of changes you can jump on previous migration simple by:\n$ alembic downgrade -1 Or jump up from previus to next:\n$ alembic upgrade +1 More you can find by reading friendly manual\nLocal/dev/prod Interesting thing about alembic.ini file - you cannot use environment variables there. So the sqlalchemy.url will be hardcoded. And if you have different path’s for local, staging or production databases - it will be hard to manage. I find a way how to dial with different configurations. You need to add this thing instead of actual db url:\nsqlalchemy.url = postgresql+psycopg2://{}:{}@{}:5432/{}?sslmode=disable This is template string. And in ./alembic/env.py change run_migrations_* functions to this:\ndef run_migrations_offline() - None: url = config.get_main_option(\"sqlalchemy.url\").format(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB) context.configure( url=url, target_metadata=target_metadata, literal_binds=True, dialect_opts={\"paramstyle\": \"named\"}, ) with context.begin_transaction(): context.run_migrations() def run_migrations_online() - None: url = config.get_main_option(\"sqlalchemy.url\").format(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB) connectable = create_engine(url) with connectable.connect() as connection: context.configure(connection=connection, target_metadata=target_metadata) with context.begin_transaction(): context.run_migrations() You see? We imported env variables and fill the cells in template string. Why this is not added out of the box? Don’t know. So inconvenience.\nSources:  Alembic official documentation SQLAlchemy official documentation Using environtment variables inide .ini file  Conclusions Start project with Alembic. It’s not easy to integrate it into existed project.\nP.S. - this is not tutorial, this is set of thoughts and “recepies”. And it’s my first atempt to write articles. I’m sory if you disapointed at the end of article.\n",
+  "wordCount" : "1448",
+  "inLanguage": "en",
+  "datePublished": "2023-08-12T12:36:45+03:00",
+  "dateModified": "2023-08-12T12:36:45+03:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://example.org/posts/alembic-basic-usage/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shanin Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://example.org/" accesskey="h" title="Shanin Blog (Alt + H)">Shanin Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://example.org/about/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Alembic - Basic Usage
+    </h1>
+    <div class="post-meta"><span title='2023-08-12 12:36:45 +0300 EEST'>August 12, 2023</span>
+
+</div>
+  </header> 
+  <div class="post-content"><blockquote>
+<p>This is not tutorial - it&rsquo;s my understanding! If I&rsquo;m worng - let me know.</p>
+</blockquote>
+<p>Before dive into the tutorial - first read Alembic getting started manual.</p>
+<h3 id="setup">Setup<a hidden class="anchor" aria-hidden="true" href="#setup">#</a></h3>
+<p>After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ alembic init alembic
+</code></pre></div><p>This command will add <code>alembic</code> folder ( with banch of folder and files in it ) and <code>alembic.ini</code> file.</p>
+<p>In <code>alembic.ini</code> change <code>sqlalchemy.url</code> variable in <code>[alembic]</code> section to your database connection string. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#66d9ef">[alembic]</span>
+<span style="color:#75715e">; ... configuration ...</span>
+<span style="color:#a6e22e">sqlalchemy.url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable</span>
+<span style="color:#75715e">; ... configuration ...</span>
+</code></pre></div><p>This thing will allow alembic to connect to the database and detect changes. As I understand - if you want to create initial
+migration file with all changes in it and every thing is already in the database, alembic will autogenerate empty migration file.
+<em>Because there are no difference between <code>metadata</code> and actual schema in database.</em></p>
+<h2 id="autogenerate-migration">Autogenerate migration<a hidden class="anchor" aria-hidden="true" href="#autogenerate-migration">#</a></h2>
+<p>Main goal of using alembic - autogenerating migrations. You can create migrations and manualy declare all tables and relation
+in migration files. But, more for me ( and most of the userers in the internet, as I can see ) autogeneration is the main use case.</p>
+<p>After initial setup and defining all required files and connections declare your table. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine, Column, Integer, Text, Table, MetaData
+engine <span style="color:#f92672">=</span> create_engine(DATABASE_URL)
+metadata <span style="color:#f92672">=</span> MetaData()
+
+users <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;users&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;id&#34;</span>, Integer, primary_key<span style="color:#f92672">=</span>True),
+    Column(<span style="color:#e6db74">&#34;name&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;image&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;active&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;created_at&#34;</span>, Text),
+)
+</code></pre></div><blockquote>
+<p>I using SQLAlchemy Core. It&rsquo;s enough for me. For SQLAlchemy ORM steps will be mostly the same - declare models, import metadata</p>
+</blockquote>
+<p><strong>Define metadata</strong></p>
+<p>After alembic initialization you can fined <code>alembic</code> folder in the folder where you start this command. In this folder exist <code>env.py</code> file.
+Here we need to import all models and metadata. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># ./alembic/env.py</span>
+
+<span style="color:#f92672">import</span> models <span style="color:#f92672">as</span> db
+<span style="color:#75715e"># add your model&#39;s MetaData object here</span>
+<span style="color:#75715e"># for &#39;autogenerate&#39; support</span>
+<span style="color:#75715e"># from myapp import mymodel</span>
+<span style="color:#75715e"># target_metadata = mymodel.Base.metadata</span>
+target_metadata <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>metadata
+
+</code></pre></div><p>As you can see from the autogenerated comments - alembic asc you to import you model ( or multiple models ) and change <code>target_metadata</code>
+value to your actual <code>metadata</code>. Very important to import your models because in another way your <code>metadata.tables</code> will be empty.</p>
+<p><strong>Create initial migration</strong></p>
+<p>And finaly run this command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ alembic revision --autogenerate -m <span style="color:#e6db74">&#34;initial&#34;</span>
+INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Context impl PostgresqlImpl.
+INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Will assume transactional DDL.
+INFO  <span style="color:#f92672">[</span>alembic.autogenerate.compare<span style="color:#f92672">]</span> Detected added table <span style="color:#e6db74">&#39;users&#39;</span>
+  Generating /home/alex/projects/memosynth/memosynth-
+  infrastructure/database/alembic/versions/c46dab3fa34a_initial.py ...  <span style="color:#66d9ef">done</span>
+</code></pre></div><p>After that you will find new file with content like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;&#34;&#34;initial
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Revision ID: c46dab3fa34a
+</span><span style="color:#e6db74">Revises: 
+</span><span style="color:#e6db74">Create Date: 2023-08-12 13:55:00.336951
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Sequence, Union
+
+<span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+<span style="color:#f92672">import</span> sqlalchemy <span style="color:#f92672">as</span> sa
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> None:
+    <span style="color:#75715e"># ### commands auto generated by Alembic - please adjust! ###</span>
+    op<span style="color:#f92672">.</span>create_table(<span style="color:#e6db74">&#39;users&#39;</span>,
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;id&#39;</span>, sa<span style="color:#f92672">.</span>Integer(), nullable<span style="color:#f92672">=</span>False),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;name&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;email&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;phone&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;image&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;role&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;active&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;password_hash&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;public&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;created_at&#39;</span>, sa<span style="color:#f92672">.</span>Text(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>PrimaryKeyConstraint(<span style="color:#e6db74">&#39;id&#39;</span>)
+    )
+    <span style="color:#75715e"># ### end Alembic commands ###</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> None:
+    <span style="color:#75715e"># ### commands auto generated by Alembic - please adjust! ###</span>
+    op<span style="color:#f92672">.</span>drop_table(<span style="color:#e6db74">&#39;users&#39;</span>)
+    <span style="color:#75715e"># ### end Alembic commands ###</span>
+</code></pre></div><p>Also, if you connect to database you will find new table <code>alembic_revision</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">application<span style="color:#f92672">=</span><span style="color:#75715e"># \dt</span>
+            List of relations
+ Schema |      Name       | Type  | Owner 
+--------+-----------------+-------+-------
+ public | alembic_version | table | user
+<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span>
+
+application<span style="color:#f92672">=</span><span style="color:#75715e"># SELECT * FROM alembic_version;</span>
+ version_num 
+-------------
+<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span>
+
+</code></pre></div><h2 id="models-in-separate-files">Models in separate files<a hidden class="anchor" aria-hidden="true" href="#models-in-separate-files">#</a></h2>
+<p>For example you have users model in separate file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># ./models/users.py</span>
+<span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> Column, Integer, Table, Text
+<span style="color:#f92672">from</span> . <span style="color:#f92672">import</span> metadata
+
+users <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;users&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;id&#34;</span>, Integer, primary_key<span style="color:#f92672">=</span>True),
+    Column(<span style="color:#e6db74">&#34;name&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;image&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;active&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;created_at&#34;</span>, Text),
+)
+</code></pre></div><p>And <code>./models/__init__.py</code> file with metadata and engine defined:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine, MetaData
+DATABASE_URL: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable&#34;</span>
+
+engine <span style="color:#f92672">=</span> create_engine(DATABASE_URL)
+metadata <span style="color:#f92672">=</span> MetaData()
+</code></pre></div><p>In this case if you just import metadata - migration file will be empty. This is heppening because your MetaData will
+not contain any tables. To include tables add this table in <code>./alembic/env.py</code> like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> models.users <span style="color:#f92672">import</span> users
+</code></pre></div><p>Or include them in <code>./models/__init__.py</code> like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine, MetaData
+DATABASE_URL: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;postgresql+psycopg2://user:password@localhost:5432/application?sslmode=disable&#34;</span>
+engine <span style="color:#f92672">=</span> create_engine(DATABASE_URL)
+metadata <span style="color:#f92672">=</span> MetaData()
+<span style="color:#f92672">from</span> models.users <span style="color:#f92672">import</span> users
+</code></pre></div><p>To understand why this is happening read python documentation about module importing and what is goin on under the
+hood - <a href="https://docs.python.org/3/reference/import.html">5. The import system</a>.</p>
+<h2 id="running-migration">Running migration<a hidden class="anchor" aria-hidden="true" href="#running-migration">#</a></h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ alembic upgrade head
+</code></pre></div><h2 id="updating-database-schema">Updating database schema<a hidden class="anchor" aria-hidden="true" href="#updating-database-schema">#</a></h2>
+<p>Let&rsquo;s say you want to extend user model and add a few more tables like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># ./models/users.py</span>
+<span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> Column, Table, String, Text, ForeignKey, Boolean, DateTime, Integer
+<span style="color:#75715e"># from sqlalchemy.dialects.postgresql import UUID</span>
+<span style="color:#75715e"># import uuid</span>
+<span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+<span style="color:#f92672">from</span> . <span style="color:#f92672">import</span> metadata
+
+
+users <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;users&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;id&#34;</span>, Integer, primary_key<span style="color:#f92672">=</span>True),
+    Column(<span style="color:#e6db74">&#34;name&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;email&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;phone&#34;</span>, String(<span style="color:#ae81ff">16</span>)),
+    Column(<span style="color:#e6db74">&#34;image&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;role&#34;</span>, String(<span style="color:#ae81ff">16</span>), ForeignKey(<span style="color:#e6db74">&#34;roles.name&#34;</span>, ondelete<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;CASCADE&#34;</span>)),
+    Column(<span style="color:#e6db74">&#34;active&#34;</span>, Boolean, default<span style="color:#f92672">=</span>False),
+    Column(<span style="color:#e6db74">&#34;password_hash&#34;</span>, Text),
+    Column(<span style="color:#e6db74">&#34;public&#34;</span>, Boolean, default<span style="color:#f92672">=</span>False),
+    Column(<span style="color:#e6db74">&#34;created_at&#34;</span>, DateTime, default<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>now),
+    Column(<span style="color:#e6db74">&#34;updated_at&#34;</span>, DateTime, default<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>now, onupdate<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>now),
+)
+
+roles <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;roles&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;name&#34;</span>, String(<span style="color:#ae81ff">16</span>), primary_key<span style="color:#f92672">=</span>True)
+)
+
+providers <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;providers&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;name&#34;</span>, String(<span style="color:#ae81ff">16</span>), primary_key<span style="color:#f92672">=</span>True)
+)
+
+user_providers <span style="color:#f92672">=</span> Table(
+    <span style="color:#e6db74">&#34;user_providers&#34;</span>,
+    metadata,
+    Column(<span style="color:#e6db74">&#34;user_id&#34;</span>, Integer, ForeignKey(<span style="color:#e6db74">&#34;users.id&#34;</span>)),
+    Column(<span style="color:#e6db74">&#34;provider&#34;</span>, String(<span style="color:#ae81ff">16</span>), ForeignKey(<span style="color:#e6db74">&#34;providers.name&#34;</span>)),
+)
+</code></pre></div><p>After making changes in your file run another command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ alembic revision --autogenerate -m <span style="color:#e6db74">&#34;update user table&#34;</span>
+</code></pre></div><p>This command should add another file in <code>./alembic/revisions</code> folder:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;&#34;&#34;update user table
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Revision ID: aabbe38f60da
+</span><span style="color:#e6db74">Revises: 327ea701a73a
+</span><span style="color:#e6db74">Create Date: 2023-08-12 14:37:37.199586
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Sequence, Union
+<span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+<span style="color:#f92672">import</span> sqlalchemy <span style="color:#f92672">as</span> sa
+
+<span style="color:#75715e"># revision identifiers, used by Alembic.</span>
+revision: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aabbe38f60da&#39;</span>
+down_revision: Union[str, None] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;327ea701a73a&#39;</span>
+branch_labels: Union[str, Sequence[str], None] <span style="color:#f92672">=</span> None
+depends_on: Union[str, Sequence[str], None] <span style="color:#f92672">=</span> None
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> None:
+    <span style="color:#75715e"># ### commands auto generated by Alembic - please adjust! ###</span>
+    op<span style="color:#f92672">.</span>create_table(<span style="color:#e6db74">&#39;providers&#39;</span>,
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;name&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>), nullable<span style="color:#f92672">=</span>False),
+    sa<span style="color:#f92672">.</span>PrimaryKeyConstraint(<span style="color:#e6db74">&#39;name&#39;</span>)
+    )
+    op<span style="color:#f92672">.</span>create_table(<span style="color:#e6db74">&#39;roles&#39;</span>,
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;name&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>), nullable<span style="color:#f92672">=</span>False),
+    sa<span style="color:#f92672">.</span>PrimaryKeyConstraint(<span style="color:#e6db74">&#39;name&#39;</span>)
+    )
+    op<span style="color:#f92672">.</span>create_table(<span style="color:#e6db74">&#39;user_providers&#39;</span>,
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;user_id&#39;</span>, sa<span style="color:#f92672">.</span>Integer(), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;provider&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>), nullable<span style="color:#f92672">=</span>True),
+    sa<span style="color:#f92672">.</span>ForeignKeyConstraint([<span style="color:#e6db74">&#39;provider&#39;</span>], [<span style="color:#e6db74">&#39;providers.name&#39;</span>], ),
+    sa<span style="color:#f92672">.</span>ForeignKeyConstraint([<span style="color:#e6db74">&#39;user_id&#39;</span>], [<span style="color:#e6db74">&#39;users.id&#39;</span>], )
+    )
+    op<span style="color:#f92672">.</span>add_column(<span style="color:#e6db74">&#39;users&#39;</span>, sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;updated_at&#39;</span>, sa<span style="color:#f92672">.</span>DateTime(), nullable<span style="color:#f92672">=</span>True))
+    op<span style="color:#f92672">.</span>create_foreign_key(None, <span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;roles&#39;</span>, [<span style="color:#e6db74">&#39;role&#39;</span>], [<span style="color:#e6db74">&#39;name&#39;</span>], ondelete<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;CASCADE&#39;</span>)
+    <span style="color:#75715e"># ### end Alembic commands ###</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> None:
+    <span style="color:#75715e"># ### commands auto generated by Alembic - please adjust! ###</span>
+    op<span style="color:#f92672">.</span>drop_constraint(None, <span style="color:#e6db74">&#39;users&#39;</span>, type_<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;foreignkey&#39;</span>)
+    op<span style="color:#f92672">.</span>drop_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;updated_at&#39;</span>)
+    op<span style="color:#f92672">.</span>drop_table(<span style="color:#e6db74">&#39;user_providers&#39;</span>)
+    op<span style="color:#f92672">.</span>drop_table(<span style="color:#e6db74">&#39;roles&#39;</span>)
+    op<span style="color:#f92672">.</span>drop_table(<span style="color:#e6db74">&#39;providers&#39;</span>)
+    <span style="color:#75715e"># ### end Alembic commands ###</span>
+</code></pre></div><p>As you can see - alembic does not recognize column type change&hellip; May be I&rsquo;m doing something wrong but probably
+this should be added manualy. And also:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">    op<span style="color:#f92672">.</span>create_foreign_key(None, <span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;roles&#39;</span>, [<span style="color:#e6db74">&#39;role&#39;</span>], [<span style="color:#e6db74">&#39;name&#39;</span>], ondelete<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;CASCADE&#39;</span>)
+</code></pre></div><p>Will create foreign key constraing without name?&hellip; That&rsquo;s why this files has this comments:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># ### commands auto generated by Alembic - please adjust! ###</span>
+</code></pre></div><blockquote>
+<p><em>Important!</em> Always check what actualy does it want to write into database! Do not trust the machines :)</p>
+</blockquote>
+<p>So basicaly what I did is add all necessary changes into migration file and upgrade head. By the way, as you can see
+columns <code>active</code> and <code>created_at</code> had type <code>Text</code>, after changes I have change this types to more convinient
+<code>Boolean</code> and <code>DateTime</code>, but you cannot see this in migration file. Change column types is a little bit paintfull.
+I made it by adding new column <code>is_active</code>, move all data into new column from old <code>active</code>, remove old column
+and rename new column to <code>active</code>. And in downgrade function this process should be reversed. This is the code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">op<span style="color:#f92672">.</span>add_column(<span style="color:#e6db74">&#39;users&#39;</span>, sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;is_active&#39;</span>, sa<span style="color:#f92672">.</span>Text))
+connection <span style="color:#f92672">=</span> op<span style="color:#f92672">.</span>get_bind()
+connection<span style="color:#f92672">.</span>execute(text(<span style="color:#e6db74">&#34;UPDATE users SET is_active = (active::text)&#34;</span>))
+op<span style="color:#f92672">.</span>drop_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;active&#39;</span>)
+op<span style="color:#f92672">.</span>alter_column(<span style="color:#e6db74">&#34;users&#34;</span>, <span style="color:#e6db74">&#34;is_active&#34;</span>, new_column_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;active&#34;</span>)
+</code></pre></div><p>This shows us the importantse of designing database schema on early stages of the project.</p>
+<h2 id="managing-migrations">Managing migrations<a hidden class="anchor" aria-hidden="true" href="#managing-migrations">#</a></h2>
+<p>After you did a couple of changes you can jump on previous migration simple by:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#960050;background-color:#1e0010">$</span> alembic downgrade <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+</code></pre></div><p>Or jump up from previus to next:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#960050;background-color:#1e0010">$</span> alembic upgrade <span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+</code></pre></div><p>More you can find by <a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#relative-migration-identifiers">reading friendly manual</a></p>
+<h2 id="localdevprod">Local/dev/prod<a hidden class="anchor" aria-hidden="true" href="#localdevprod">#</a></h2>
+<p>Interesting thing about <code>alembic.ini</code> file - you cannot use environment variables there. So the sqlalchemy.url will be
+hardcoded. And if you have different path&rsquo;s for local, staging or production databases - it will be hard to manage.
+I find a way how to dial with different configurations. You need to add this thing instead of actual db url:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">sqlalchemy.url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">postgresql+psycopg2://{}:{}@{}:5432/{}?sslmode=disable</span>
+</code></pre></div><p>This is template string. And in <code>./alembic/env.py</code> change <code>run_migrations_*</code> functions to this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_migrations_offline</span>() <span style="color:#f92672">-&gt;</span> None:
+    url <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>get_main_option(<span style="color:#e6db74">&#34;sqlalchemy.url&#34;</span>)<span style="color:#f92672">.</span>format(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB)
+    context<span style="color:#f92672">.</span>configure(
+        url<span style="color:#f92672">=</span>url,
+        target_metadata<span style="color:#f92672">=</span>target_metadata,
+        literal_binds<span style="color:#f92672">=</span>True,
+        dialect_opts<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;paramstyle&#34;</span>: <span style="color:#e6db74">&#34;named&#34;</span>},
+    )
+
+    <span style="color:#66d9ef">with</span> context<span style="color:#f92672">.</span>begin_transaction():
+        context<span style="color:#f92672">.</span>run_migrations()
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_migrations_online</span>() <span style="color:#f92672">-&gt;</span> None:
+    url <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>get_main_option(<span style="color:#e6db74">&#34;sqlalchemy.url&#34;</span>)<span style="color:#f92672">.</span>format(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_DB)
+    connectable <span style="color:#f92672">=</span> create_engine(url)
+    <span style="color:#66d9ef">with</span> connectable<span style="color:#f92672">.</span>connect() <span style="color:#66d9ef">as</span> connection:
+        context<span style="color:#f92672">.</span>configure(connection<span style="color:#f92672">=</span>connection, target_metadata<span style="color:#f92672">=</span>target_metadata)
+        <span style="color:#66d9ef">with</span> context<span style="color:#f92672">.</span>begin_transaction():
+            context<span style="color:#f92672">.</span>run_migrations()
+</code></pre></div><p>You see? We imported env variables and fill the cells in template string. Why this is not added out of the box? Don&rsquo;t know.
+So inconvenience.</p>
+<h2 id="sources">Sources:<a hidden class="anchor" aria-hidden="true" href="#sources">#</a></h2>
+<ul>
+<li><a href="https://alembic.sqlalchemy.org/en/latest/">Alembic official documentation</a></li>
+<li><a href="https://docs.sqlalchemy.org/en/20/">SQLAlchemy official documentation</a></li>
+<li><a href="https://github.com/sqlalchemy/alembic/discussions/1149">Using environtment variables inide .ini file</a></li>
+</ul>
+<h2 id="conclusions">Conclusions<a hidden class="anchor" aria-hidden="true" href="#conclusions">#</a></h2>
+<p>Start project with Alembic. It&rsquo;s not easy to integrate it into existed project.</p>
+<p>P.S. - this is not tutorial, this is set of thoughts and &ldquo;recepies&rdquo;. And it&rsquo;s my first atempt to write articles. I&rsquo;m sory if
+you disapointed at the end of article.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://example.org/tags/python/">Python</a></li>
+      <li><a href="http://example.org/tags/sqlalchemy/">SQLAlchemy</a></li>
+      <li><a href="http://example.org/tags/alembic/">Alembic</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="http://example.org/">Shanin Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
