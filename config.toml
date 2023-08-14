@@ -11,15 +11,44 @@ tag = 'tags'
 
 
 
+# main menu
 [[menu.main]]
 identifier = "about"
 name = "About me"
 url = "/about/"
 weight = 10
 
-# [[menu.main]]
-# identifier = "tags"
-# name = "tags"
-# url = "/tags/"
-# weight = 20
+[[menu.main]]
+identifier = "projects"
+name = "Projects"
+url = "/projects/"
+weight = 20
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 30
+
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 40
+
+[params]
+ShowShareButtons = true
+ShareButtons = ["linkedin", "twitter", "facebook"]
+
+[params.homeInfoParams]
+Title = "Hi there!"
+Content = "Welcome to my blog"
+
+[[params.socialIcons]]
+name = "twitter"
+url = "https://twitter.com/funny_droid"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/shaninalex"
 

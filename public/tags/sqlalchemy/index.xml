@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>SQLAlchemy on Shanin Blog</title>
+    <link>http://example.org/tags/sqlalchemy/</link>
+    <description>Recent content in SQLAlchemy on Shanin Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Aug 2023 12:36:45 +0300</lastBuildDate><atom:link href="http://example.org/tags/sqlalchemy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alembic - Basic Usage</title>
+      <link>http://example.org/posts/alembic-basic-usage/</link>
+      <pubDate>Sat, 12 Aug 2023 12:36:45 +0300</pubDate>
+      
+      <guid>http://example.org/posts/alembic-basic-usage/</guid>
+      <description>This is not tutorial - it&amp;rsquo;s my understanding! If I&amp;rsquo;m worng - let me know.
+ Before dive into the tutorial - first read Alembic getting started manual.
+Setup After you setup your working enviroment ( env, pip, sqlalchemy etc. ) run:
+$ alembic init alembic This command will add alembic folder ( with banch of folder and files in it ) and alembic.ini file.
+In alembic.ini change sqlalchemy.url variable in [alembic] section to your database connection string.</description>
+    </item>
+    
+  </channel>
+</rss>
