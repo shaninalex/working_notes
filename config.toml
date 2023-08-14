@@ -8,3 +8,18 @@ theme = "PaperMod"
 [taxonomies]
 category = 'categories'
 tag = 'tags'
+
+
+
+[[menu.main]]
+identifier = "about"
+name = "About me"
+url = "/about/"
+weight = 10
+
+# [[menu.main]]
+# identifier = "tags"
+# name = "tags"
+# url = "/tags/"
+# weight = 20
+
