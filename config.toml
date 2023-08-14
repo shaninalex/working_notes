@@ -1,4 +1,10 @@
 baseURL = "http://example.org/"
 languageCode = "en-us"
-title = "Working notes"
-theme = "ananke"
+title = "Shanin Blog"
+
+# git submodule add https://github.com/zeon-studio/hugoplate.git themes/hugoplate
+theme = "PaperMod"
+
+[taxonomies]
+category = 'categories'
+tag = 'tags'

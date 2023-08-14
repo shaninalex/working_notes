@@ -2,6 +2,7 @@
 title: "Alembic - Basic Usage"
 date: 2023-08-12T12:36:45+03:00
 draft: false
+tags: ['Python', 'SQLAlchemy', 'Alembic']
 ---
 
 > This is not tutorial - it's my understanding! If I'm worng - let me know.
