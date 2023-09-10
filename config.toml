@@ -42,7 +42,7 @@ ShareButtons = ["linkedin", "twitter", "facebook"]
 
 [params.homeInfoParams]
 Title = "Hi there!"
-Content = "Welcome to my blog"
+Content = "Welcome to my blog. This is not yeat another tech-blog. It's my notes and conspects about things I learned recently or how I did something on my job."
 
 [[params.socialIcons]]
 name = "twitter"
