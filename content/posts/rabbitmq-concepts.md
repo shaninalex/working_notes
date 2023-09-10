@@ -106,17 +106,15 @@ are `guest:guest`. And you will see this page:
 I will not writing details about web interface because it's not the topic of this
 article. But this is the place where you can practice.
 
-> In `Exchanges` tab you can find predefined Rabbitmq exchanges. You can't 
-modify them.
 
-## Core concepts
+# Core concepts
 
 - **Producer** - emits messages to exchange.
 - **Consumer** - receives messages from the queue.
-- **Queue** - Keeps/Stores messages *( In RabbitMQ **producer** never published directly in
-the **queue**. It Has to use **exchange** )*.
-- **Exchange** - is bound with **queue** by `binding key`. It dicides in which **queue**
-message should be placed. It compare `routing key` with `binding key`.
+- **Queue** - Keeps/Stores messages *( In RabbitMQ **producer** never published 
+directly in the **queue**. It Has to use **exchange** )*.
+- **Exchange** - is bound with **queue** by `binding key`. It dicides in which 
+**queue** message should be placed. It compare `routing key` with `binding key`.
 
 This is communication chart:
 
@@ -130,17 +128,69 @@ queue. Than RabbitMQ deliver message to the consumer. If there are no binding
 keys with given routing-key - publisher recives an error.
 
 There are many exchange types:
-- nameless - defaul
-- fanout
-- direct
-- topic
-- headers
+- **nameless** - default
+- **fanout**
+- **direct**
+- **topic**
+- **headers**
+
+> In `Exchanges` tab in web admin panel you can find predefined Rabbitmq exchanges. 
+You can't modify them.
+
+Nameless exchange ( default ) - compares routing key with queue name. Allows 
+sending messages directly to the queue ( technicaly it sends messages throug the
+exchange into the queue, but it just feel like it does). 
+
+### fanout
+
+It routes all received messages to all queues that are bound to it. Ignores `routing
+key`. *It's like a fan that spread messages all around to the all queues*.
+
+### direct
+
+It send message to the queue that match `routing-key`. **Nameless** exchage is the 
+**direct** exchange
+
+### topic
+
+It routes a received message to queues where binding key defined by a pattern. For
+example binding key `*.log.error` routing key `application1.log.error`. If any
+binding key match routing key - producer will receive the error.
+
+### headers
+
+It's simular the topic exchange but it compares against `any` or `all` message
+headers ( header x-match determinees the behavior ).
 
 
+# Queue concepts
+
+located on single node where it was declared and referenced by unique name. 1 
+queue = 1 Erlang process. Queue is an ordered collection of messages. They are 
+handled by FIFO priciple (except prioritized queues). Internal queues are 
+prefixed by `amq`.
+
+### Main Queue Properties
+
+- `QUEUE_NAME` - human readable name 
+- `durable: bool` - survived brocker restart
+- `exclusive: bool` - used for only one connection and will autodelete when 
+connection closes
+- `autoDelete: bool` - autodelete queue when all consumers disconected
+- `classic or quorum` - increases availability
+- `priority` - queues are FIFO by default, but you can change it by using this 
+property
+- `Expiration time (TTL)` - remove not consumed messages after some time. 
+
+> All properties listed in [official documentation](https://www.rabbitmq.com/queues.html#properties)
+
+> Thread about [naming convention](https://groups.google.com/g/rabbitmq-discuss/c/Jp49IRe693o)
+as best practices to not mess around with names of exchanges, routing keys, queues etc...
 
 ---
 
-### Used information
+# Used information
 
-Basicaly this post is my conspect of Udemy course. If you want to know more 
+- Basicaly this post is my conspect of Udemy course. If you want to know more 
 about RabbitMQ - buy [this greate cource](https://www.udemy.com/course/rabbitmq-in-practice/).
+- [Official documentation](https://www.rabbitmq.com/)
