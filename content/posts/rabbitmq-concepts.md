@@ -6,10 +6,10 @@ tags: ["RabbitMQ"]
 ---
 
 
-Before we dive deep into RabbitMQ concepts, let's get this app in our computer.
-The best way, in my opinion, is to use docker. I do not like to write long
-commands in the terminal so we will use **docker compose** file. Create folder
-project folder and create this file:
+Before we delve deeper into RabbitMQ concepts, let's set up this app on our 
+computer. In my opinion, the best approach is to utilize Docker. I prefer to 
+avoid writing lengthy commands in the terminal, so we will opt for a Docker 
+Compose file. Create folder project folder and create this file:
 
 ```
 # ./docker-compose.yml
@@ -59,10 +59,35 @@ minutes - do some thing cuz’ it bearely handle any messages in the queue.
 
 ### Use cases
 
-With queue architecture you can create modular system written in different 
-laguages and technologies, you can estimate system performance and increase fault 
-tolerance level. Support horizontal scaling, autoscaling. Increase system inbound 
-traffic. Buffer system’s outboutnd bytes.
+Queue architecture offers several advantages for building modular systems that 
+use different languages and technologies:
+
+- **Modularity:** Queue-based systems enable you to build modular, decoupled components 
+that can be written in different languages and technologies. This promotes 
+flexibility in designing and evolving your system.
+- **Performance Estimation:** You can estimate the performance of your system more 
+effectively because each component communicates through queues, making it easier 
+to measure and optimize individual parts.
+- **Fault Tolerance:** Queue systems enhance fault tolerance. If one component fails 
+or experiences issues, the messages can be stored in the queue, ensuring that 
+they are not lost. This resilience improves the overall reliability of your system.
+- **Horizontal Scaling:** Queue architectures support horizontal scaling by allowing 
+you to add more instances of components that consume messages from queues. 
+This makes it easier to handle increasing workloads and traffic.
+- **Autoscaling:** With the right setup and monitoring, you can implement autoscaling 
+strategies to automatically adjust the number of instances based on workload, 
+ensuring efficient resource utilization and responsiveness.
+- **Handling Inbound Traffic:** Queue systems can absorb spikes in inbound traffic. 
+Messages are queued, preventing overload, and allowing components to process them 
+at their own pace. This helps to smooth out traffic fluctuations.
+- **Buffering Outbound Data:** Queue systems can also be used to buffer outbound 
+data. Instead of sending data directly to external services, you can queue it 
+and then have dedicated components responsible for managing the delivery. This 
+helps ensure data reliability and availability.
+
+Overall, queue-based architectures provide a powerful foundation for building 
+distributed and scalable systems that can handle diverse workloads and maintain 
+high levels of reliability and performance.
 
 ## AMQP Message
 
@@ -76,21 +101,30 @@ RabbitMQ contains this parts:
 
 ![](/static/images/rabbitmq-concepts/channels_connections.png)
 
-Inside connections you can open multiple channels. Connection is an TCP/IP 
-connection between the client and the broker. Channel is an virtual connection
-inside the phisical TCP/IP connection. Why do we need multiple channels inside
-connections instead just use multiple connections? Because establishing TCP/IP
-connection can take a while and it can make communication slow. But using channels
-inside already established connection will be much faster. Read more in [official
+Inside connections, you can open multiple channels. A connection represents a 
+TCP/IP connection between the client and the broker, while a channel is a virtual 
+connection within the physical TCP/IP connection.
+
+The reason for using multiple channels inside a single connection instead of 
+opening multiple connections is efficiency. Establishing a TCP/IP connection can 
+take some time, and having multiple connections for each task or operation can 
+slow down communication considerably.
+
+By using channels within an already established connection, you can achieve faster 
+communication because you avoid the overhead of repeatedly establishing new 
+TCP/IP connections. This approach is more efficient and helps optimize resource 
+usage. For more detailed information, you can refer to the [official
 documentation](https://www.rabbitmq.com/connections.html).
 
 ## Queuing model
 
 ![](/static/images/rabbitmq-concepts/queuing-model.png)
  
-Producer produce the message, message handlend by RabbitMQ broker and than 
-consumed by consumer. Once message is consumed it is no longer available in 
-RabbitMQ ( basicaly it do not store consumed messages since it just a broker )
+The producer produces a message, which is then handled by the RabbitMQ broker 
+and subsequently consumed by a consumer. Once the message is successfully consumed, 
+it is no longer available in RabbitMQ. In essence, RabbitMQ does not store 
+consumed messages, as it primarily functions as a message broker responsible for 
+routing and delivering messages to consumers.
 
 
 ## RabbitMQ Web Admin
@@ -120,12 +154,13 @@ This is communication chart:
 
 ![](/static/images/rabbitmq-concepts/core-concepts.png)
 
-Producer is sending message with `routing-key` "foo". Routing key is everything 
-string value. You can think about it like about categories or tags in blogs. 
-Exchange receive message and compares it with existing bindings (`binding-keys`).
-If there is any queue with same binding key, than message is persisted in bound 
-queue. Than RabbitMQ deliver message to the consumer. If there are no binding 
-keys with given routing-key - publisher recives an error.
+When a producer sends a message with a routing-key of "foo" the routing key can 
+be thought of as a string value, similar to categories or tags in blogs. The 
+exchange receives the message and compares it with existing bindings, known as 
+`binding-keys`. If there is a queue with the same `binding-key`, the message is 
+persisted in the bound queue. RabbitMQ then delivers the message to the consumer. 
+However, if there are no binding keys that match the given routing key, the 
+publisher receives an error.
 
 There are many exchange types:
 - **nameless** - default
@@ -137,9 +172,11 @@ There are many exchange types:
 > In `Exchanges` tab in web admin panel you can find predefined Rabbitmq exchanges. 
 You can't modify them.
 
-Nameless exchange ( default ) - compares routing key with queue name. Allows 
-sending messages directly to the queue ( technicaly it sends messages throug the
-exchange into the queue, but it just feel like it does). 
+### nameless
+
+The nameless exchange (default) compares the routing key with the queue name. 
+This allows for sending messages directly to the queue (technically, it sends 
+messages through the exchange into the queue, but it feels like direct messaging).
 
 ### fanout
 
@@ -155,7 +192,7 @@ It send message to the queue that match `routing-key`. **Nameless** exchage is t
 
 It routes a received message to queues where binding key defined by a pattern. For
 example binding key `*.log.error` routing key `application1.log.error`. If any
-binding key match routing key - producer will receive the error.
+binding key does not match routing key - producer will receive the error.
 
 ### headers
 
@@ -165,10 +202,10 @@ headers ( header x-match determinees the behavior ).
 
 # Queue concepts
 
-located on single node where it was declared and referenced by unique name. 1 
-queue = 1 Erlang process. Queue is an ordered collection of messages. They are 
-handled by FIFO priciple (except prioritized queues). Internal queues are 
-prefixed by `amq`.
+Located on a single node, where it was declared and referenced by a unique name, 
+each queue corresponds to one Erlang process. A queue is essentially an ordered 
+collection of messages that are handled according to the FIFO principle, except 
+for prioritized queues. Internal queues are prefixed by amq.
 
 ### Main Queue Properties
 
@@ -186,6 +223,41 @@ property
 
 > Thread about [naming convention](https://groups.google.com/g/rabbitmq-discuss/c/Jp49IRe693o)
 as best practices to not mess around with names of exchanges, routing keys, queues etc...
+
+# Conclusions
+
+RabbitMQ is indeed designed to be flexible, and while its configuration can be 
+intricate, focusing on the right architectural principles can simplify its use. 
+Here are some key steps to consider when designing a system based on RabbitMQ:
+
+- **Define Your Consumers and Providers:** Clearly identify the components that 
+will produce messages (providers) and those that will consume them (consumers). 
+This step is fundamental to understanding your messaging needs.
+- **Group by Purpose:** Group consumers and providers based on their roles or 
+purposes. For example, loggers and metric services might have distinct 
+responsibilities from product and back-office services. Avoid mixing these 
+different types of services on the same queues to maintain clarity and 
+separation of concerns.
+- **Understand Priorities and Load:** Evaluate the priority and anticipated 
+load of your queues. Some messages may require faster processing or have 
+higher importance than others. Consider setting up different queues with 
+appropriate priorities to handle various message types effectively.
+- **Basic Configuration:** Once you have a clear architectural plan in place, 
+configuring RabbitMQ becomes more straightforward. You can adjust queue 
+properties, message routing rules, and other settings to align with your design.
+- **Monitoring and Scaling:** Implement monitoring and scaling strategies to 
+ensure that your RabbitMQ-based system performs optimally. You can use tools 
+like RabbitMQ management plugins or third-party monitoring solutions to keep 
+an eye on message queues, consumers, and system health.
+
+By following these steps, you can design a RabbitMQ-based architecture that 
+aligns with your application's needs and efficiently handles messaging between 
+components. It simplifies the configuration process and ensures your messaging 
+infrastructure operates smoothly.
+
+
+In the next posts, I will continue to explore RabbitMQ with a more practical 
+approach.
 
 ---
 
