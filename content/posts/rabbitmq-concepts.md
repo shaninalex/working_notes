@@ -40,7 +40,7 @@ $ docker compose up -d
 
 Let this app up and running in the background while you can continue reading.
 
-# Queues
+# AMQP Queues
 
 Queues are a collection of entities maintained in a sequence. Sequence ( queue )
 can by modified by adding entities to the beginnign or to the end, removing from
@@ -72,7 +72,7 @@ RabbitMQ contains this parts:
 - **properties** - metadata, key/value pairs - Application specific information holder
 - **body** - payload is sequance of bytes ( byte[] )
 
-## Connections and Channels
+## AMQP Connections and Channels
 
 ![](/static/images/rabbitmq-concepts/channels_connections.png)
 
@@ -105,6 +105,37 @@ are `guest:guest`. And you will see this page:
 
 I will not writing details about web interface because it's not the topic of this
 article. But this is the place where you can practice.
+
+> In `Exchanges` tab you can find predefined Rabbitmq exchanges. You can't 
+modify them.
+
+## Core concepts
+
+- **Producer** - emits messages to exchange.
+- **Consumer** - receives messages from the queue.
+- **Queue** - Keeps/Stores messages *( In RabbitMQ **producer** never published directly in
+the **queue**. It Has to use **exchange** )*.
+- **Exchange** - is bound with **queue** by `binding key`. It dicides in which **queue**
+message should be placed. It compare `routing key` with `binding key`.
+
+This is communication chart:
+
+![](/static/images/rabbitmq-concepts/core-concepts.png)
+
+Producer is sending message with `routing-key` "foo". Routing key is everything 
+string value. You can think about it like about categories or tags in blogs. 
+Exchange receive message and compares it with existing bindings (`binding-keys`).
+If there is any queue with same binding key, than message is persisted in bound 
+queue. Than RabbitMQ deliver message to the consumer. If there are no binding 
+keys with given routing-key - publisher recives an error.
+
+There are many exchange types:
+- nameless - defaul
+- fanout
+- direct
+- topic
+- headers
+
 
 
 ---
