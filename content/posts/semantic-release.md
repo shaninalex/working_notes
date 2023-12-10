@@ -1,7 +1,7 @@
 ---
 title: "Semantic Release"
 date: 2023-12-10T14:03:17+02:00
-draft: true
+draft: false
 tags: ['git', 'administration']
 ---
 
