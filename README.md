@@ -5,3 +5,20 @@
 Instead of having a [pile of unusable code](https://github.com/shaninalex/random_code) I think it will be better to have a pile of more readable posts with code.
 
 Site made with Hugo.
+
+## work
+
+```bash
+# cloning
+git clone git@github.com:shaninalex/working_notes.git
+git submodule update --init --recursive
+
+# run
+hugo server
+
+# run with drafts
+hugo server -D
+
+# create resourse
+hugo new ./content/posts/xmpp-basic.md
+```
