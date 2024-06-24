@@ -244,10 +244,10 @@ Also you can group contact list and the roster will look like this:
         <item jid="stuart@im.company.org" name="Stuart" subsciption="to">
             <group>Coworker</group>
         </item>
-        <item jid="Garry@im.company.org" name="Garry" subsciption="from">
+        <item jid="garry@im.company.org" name="Garry" subsciption="from">
             <group>Coworker</group>
         </item>
-        <item jid="Potter@im.company.org" name="Potter" subsciption="both">
+        <item jid="potter@im.company.org" name="Potter" subsciption="both">
             <group>Friends</group>
         </item>
     </query>
@@ -257,7 +257,29 @@ Also you can group contact list and the roster will look like this:
 Roster groups can be edited with next:
 
 ```xml
+<iq id="32984723984" type="set">
+    <query xmlns="jabber:iq:roster">
+        <item jid="stuart@im.company.org">
+            <group>Friends</group>
+        </item>
+    </query>
+</iq>
+```
 
+After that server will push that change for all connected clients. Basicaly
+synchronization requests which is called `roster push`. 
+
+```xml
+<iq from="george@im.company.org"
+    id="df987239f"
+    to="george@im.company.org/office"
+    type="set">
+    <query xmlns="jabber:iq:roster">
+        <item jid="stuart@im.company.org">
+            <group>Friends</group>
+        </item>
+    </query>
+</iq>
 ```
 
 ---
