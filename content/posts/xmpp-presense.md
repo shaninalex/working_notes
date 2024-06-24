@@ -14,7 +14,7 @@ To request someone's presence you send him a subscruption request:
 ```xml
 <presence from="george@im.company.org"
         to="mary@im.company.org"
-        type="subscription" />
+        type="subscribe" />
 ```
 The recepient can approve it or denied by sending `presence` stanza of type 
 `subscribed` or `unsubscribed`:
